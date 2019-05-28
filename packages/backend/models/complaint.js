@@ -10,7 +10,7 @@ const ComplaintSchema = {
     Message: String,
     DateAndTime: Date,
     FollowUps: [FollowUpSchema],
-    Status: String
+    Status: String /* Resolved or Unresolved */
 };
 
 module.exports = { ComplaintSchema };

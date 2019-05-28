@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { API_URL } from '../utilities/helper';
-import '../styles/login.css';
+import { withStyles } from '@material-ui/core/styles';
+import { LoginStyle } from '../styles/login.jss';
+import { Button, TextField, Paper, Typography, Link } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class Login extends Component {
 
@@ -12,7 +15,9 @@ class Login extends Component {
                 username: "",
                 password: "",
                 accountType: "staff"
-            }
+            },
+            error: false,
+            logging_in: false
         }
     }
 
@@ -54,16 +59,44 @@ class Login extends Component {
     }
 
     render() {
+        const { classes } = this.props;
+
         return (
-            <div className="login-container">
-                <h1>Login</h1>
-                <input onChange={(event) => this.handleOnChange(event)} name="username" type="text" placeholder="username"></input>
-                <input onChange={(event) => this.handleOnChange(event)} name="password" type="password" placeholder="password"></input>
-                <br></br>
-                <button onClick={() => this.handleLogin()}>Login</button>
-            </div>
+            <Paper className={classes.loginContainer} elevation={5}>
+                {/* Put another container here... */}
+                <div className={classes.leveler}>
+                    <Typography variant="h4">AUI CMS</Typography>
+                    <TextField error={this.state.error}
+                        className={classes.inputBox}
+                        variant="outlined"
+                        name="username"
+                        fullWidth
+                        value={this.state.credentials.username}
+                        onChange={(event) => this.handleOnChange(event)}
+                        label="username"></TextField>
+                    <TextField error={this.state.error}
+                        type="password"
+                        className={classes.inputBox}
+                        variant="outlined"
+                        fullWidth
+                        name="password"
+                        value={this.state.credentials.password}
+                        onChange={(event) => this.handleOnChange(event)}
+                        label="password"></TextField>
+                    <Button disabled={this.state.logging_in}
+                        onClick={() => this.handleLogin()}
+                        className={classes.loginBtn}
+                        variant="contained"
+                        size="large">
+                        {this.state.logging_in ? <CircularProgress color="primary" /> : "Login"}
+                    </Button>
+                    <p style={{ margin: "auto", alignSelf: "center", fontSize: "15px", cursor: "pointer" }}> Don't have an account?
+                     {" "}    <Link to="/register">Register</Link>
+                    </p>
+                </div>
+            </Paper>
         )
     }
 }
 
-export default Login;
+export default withStyles(LoginStyle)(Login);
