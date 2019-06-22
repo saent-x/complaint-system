@@ -1,0 +1,83 @@
+.regContainer {
+	background-color: white;
+	height: auto;
+    width: 600px;
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	margin-top: 20px;
+    padding: 25px;
+    justify-content: center;
+    align-content: center;
+}
+
+.regContainer2 {
+	padding-top: 10px;
+	display: flex;
+	flex-direction: row;
+	margin: 10px;
+}
+
+.selectType {
+	width: 150px;
+	margin: 15px 5px 5px 5px !important;
+}
+
+.selectType2 {
+	width: 150px;
+	margin: 0 0 5px 0 !important;
+}
+
+.regButton {
+	width: 100px;
+	height: 50px;
+	background-color: black !important;
+	color: white !important;
+	margin-top: 15px !important;
+}
+
+.regButton:hover {
+	background-color: black !important;
+}
+
+.remDetails {
+	margin: 10px 5px 5px 5px !important;
+}
+
+.inputBox {
+	margin: 5px !important;
+}
+
+/* .MuiInput-underline:after {
+	border-bottom: 2px solid black !important;
+} */
+.emailInput{
+    width: 320px;
+}
+
+.marginFix{
+    margin-left: 5px !important;
+}
+@media only screen and (max-width: 768px){
+    .regContainer{
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+    }
+
+    .emailInput{
+        width: 250px;
+    }
+
+    .marginFix{
+        margin: 0;
+    }
+
+    .selectType {
+        width:200px;
+    }
+    .selectType2{
+        width: 200px;
+    }
+
+}

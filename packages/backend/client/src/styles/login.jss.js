@@ -1,37 +1,42 @@
-
 export const LoginStyle = theme => ({
-    loginContainer: {
-        width: "25%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minWidth: "300px",
-        minHeight: "400px",
-        margin: "auto",
-        marginTop: "50px",
-        padding: theme.spacing.unit,
-        justifyContent: "center"
-    },
-    inputBox: {
-        marginTop: "10px",
-        marginBottom: "10px",
-        height: "50px",
-        alignSelf: "center"
-    },
-    leveler: {
-        maxWidth: "300px",
-        height: "300px"
-    },
-    loginBtn: {
-        width: "100px",
-        height: "50px",
-        backgroundColor: "black",
-        color: "white",
-        marginTop: "10px",
-        marginBottom: "10px",
+	loginContainer: {
+		width: "25%",
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		minWidth: "300px",
+		minHeight: "400px",
+		margin: "auto",
+		marginTop: "50px",
+		padding: theme.spacing(0),
+		justifyContent: "center"
+	},
+	inputBox: {
+		marginTop: "10px",
+		width: "250px",
+		marginBottom: "10px",
+		height: "50px",
+		alignSelf: "center"
+	},
+	typeSelect: {
+        width: "150px",
+        marginBottom: "10px"
+	},
+	leveler: {
+		maxWidth: "300px",
+		height: "300px",
+		display: "flex",
+		flexDirection: "column"
+	},
+	loginBtn: {
+		width: "100px",
+		height: "50px",
+		backgroundColor: "black",
+		color: "white",
+		marginTop: "10px",
 
-        '&:hover': {
-            backgroundColor: "black"
-        }
-    }
+		"&:hover": {
+			backgroundColor: "black"
+		}
+	}
 });
