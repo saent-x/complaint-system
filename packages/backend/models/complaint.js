@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const FollowUpSchema = new mongoose.Schema({
     Message: String,
@@ -13,4 +14,14 @@ const ComplaintSchema = {
     Status: String /* Resolved or Unresolved */
 };
 
-module.exports = { ComplaintSchema };
+const Complaint = mongoose.model("Complaint", ComplaintSchema);
+
+function ValidateComplaint(complaint) {
+    const schema = {
+        Message: Joi.string().required(),
+        DateAndTime: Joi.date().required(),
+    }
+    return Joi.validate(complaint, schema);
+}
+
+module.exports = { Complaint, ValidateComplaint };
