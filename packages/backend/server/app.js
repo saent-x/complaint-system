@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const authentication = require("./routes/authentication");
+const complaintsemantics = require("./routes/complaintsemantics");
 
 // Connect Database
 mongoose
@@ -24,6 +25,7 @@ app.use(cors());
 
 // Middleware Routes
 app.use("/api/auth", authentication);
+app.use("/api/comp", complaintsemantics);
 
 const PORT = process.env.PORT || 5000;
 

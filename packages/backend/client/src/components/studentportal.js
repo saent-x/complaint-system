@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import {Drawer, CssBaseline,Divider} from "@material-ui/core";
 
 class StudentPortal extends Component {
     render() {
         return (
             <div>
-                StudentPortal
+                <CssBaseline />
+                
             </div>
         );
     }
