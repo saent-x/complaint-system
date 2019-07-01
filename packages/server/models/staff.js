@@ -11,6 +11,7 @@ const StaffSchema = new mongoose.Schema({
 	StaffNo: String,
 	Department: String,
 	EmailAddress: String,
+	ComplaintRegion: { type: String, enum: ["Hostel", "Faculty", "Cafeteria", "Others"] },
 	Password: String,
 	AdminCreds: AdminCredsSchema,
 	AssignedComplaints: [{ type: mongoose.Schema.Types.ObjectId, ref: "Complaint" }]
@@ -22,6 +23,7 @@ function ValidateStaff(staff) {
 		Password: Joi.string()
 			.min(8)
 			.required(),
+		ComplaintRegion: Joi.string().required(),
 		StaffNo: Joi.string().required(),
 		Department: Joi.string().required(),
 		EmailAddress: Joi.string()

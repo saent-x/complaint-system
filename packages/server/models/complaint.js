@@ -3,36 +3,38 @@ const Joi = require("joi");
 const { Staff } = require("../models/staff");
 const _ = require("lodash");
 
-const ComplaintSchema = {
+const ComplaintSchema = new mongoose.Schema({
+	Subject: String,
 	Message: String,
 	DateAndTime: Date,
-	Department: String,
+	ComplaintRegion: { type: String, enum: ["Hostel", "Faculty", "Cafeteria", "Others"] },
 	FollowUps: [{ type: mongoose.Schema.Types.ObjectId, ref: "FollowUp" }],
 	Status: { type: String, default: "pending" },
 	Student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
 	Staff: { type: mongoose.Schema.Types.ObjectId, ref: "Staff" }
-};
+});
 
 const Complaint = mongoose.model("Complaint", ComplaintSchema);
 
 function ValidateComplaint(complaint) {
 	const schema = {
+		Subject: Joi.string().required(),
 		Message: Joi.string().required(),
-		Department: Joi.string().required(),
+		ComplaintRegion: Joi.string().required(),
 		DateAndTime: Joi.date().required()
 	};
 	return Joi.validate(complaint, schema);
 }
 
-async function GetStaffToBeAssigned() {
+async function GetStaffToBeAssigned(complaintRegion) {
 	// Filter any staff with more than 2 complaints
 	let selected = null;
-	const filter = await Staff.find({}).populate("AssignedComplaints");
-	if (filter) {
-		if (filter.length > 0) {
-			const qualified = filter.filter(element => element.AssignedComplaints.length < 2);
-			//Randomly pick a staff
-			selected = qualified.length > 0 ? qualified[_.random(qualified.length - 1, 0, false)] : filter[_.random(filter.length - 1, 0, false)];
+	const staffList = await Staff.find({ ComplaintRegion: complaintRegion }).populate("AssignedComplaints");
+	if (staffList) {
+		if (staffList.length > 0) {
+			const qualified = staffList.filter(element => element.AssignedComplaints.length < 2);
+			//Pick the first Staff on the list
+			selected = qualified.length > 0 ? qualified[0] : staffList[0];
 			return selected;
 		}
 		return null;
@@ -40,18 +42,10 @@ async function GetStaffToBeAssigned() {
 	return null;
 }
 
-function AssignComplaintToStaff(staff, complaint_id) {
-	Staff.findOneAndUpdate(
-		{ _id: staff._id },
-		{
-			$push: {
-				AssignedComplaints: complaint_id
-			}
-		},
-		{ new: true }
-	)
-		.then(result => (result ? result : null))
-		.catch(() => null);
+async function AssignComplaintToStaff(staffTobeAssigned, complaint_id) {
+	const staff = await Staff.findOne({ _id: staffTobeAssigned._id });
+	staff.AssignedComplaints.push(complaint_id);
+	return await staff.save();
 }
 
 module.exports = { Complaint, ValidateComplaint, GetStaffToBeAssigned, AssignComplaintToStaff };

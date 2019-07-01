@@ -10,20 +10,25 @@ const jwt = require("jsonwebtoken");
 router.post("/register", async (req, res) => {
 	try {
 		const isStudent = req.query.type === "student";
-		const { error } = isStudent
-			? ValidateStudent(req.body)
-			: ValidateStaff(req.body);
+		const { error } = isStudent ? ValidateStudent(req.body) : ValidateStaff(req.body);
 
 		if (error) return res.status(400).send(error.details[0].message);
 
-		const newAccount = isStudent
-			? new Student({ ...req.body })
-			: new Staff({ ...req.body });
+		//Check if account exists already
+		const checkEmail = isStudent
+			? await Student.findOne({ EmailAddress: req.body.EmailAddress })
+			: await Staff.findOne({ EmailAddress: req.body.EmailAddress });
+		const checkMatno = isStudent ? await Student.findOne({ MatNo: req.body.MatNo }) : await Staff.findOne({ StaffNo: req.body.StaffNo });
+
+		if (checkEmail || checkMatno)
+			throw `Account with that${checkEmail ? "Email" : ""}${checkEmail && checkMatno ? " &" : ""}${
+				checkMatno ? " Matric No" : ""
+			} already exists here!!`;
+
+		const newAccount = isStudent ? new Student({ ...req.body }) : new Staff({ ...req.body });
 		const result = await newAccount.save();
 		if (result) return res.send(result);
-		return res
-			.status(400)
-			.send("an error ocurred while creating a new account!");
+		throw "an error ocurred while creating a new account!";
 	} catch (error) {
 		return res.status(400).send(error);
 	}
@@ -44,9 +49,7 @@ router.post("/", async (req, res) => {
 		if (error) return res.status(400).send(error.details[0].message);
 
 		const isStudent = req.query.type === "student";
-		const result = isStudent
-			? await Student.findOne({ ...req.body })
-			: await Staff.findOne({ ...req.body });
+		const result = isStudent ? await Student.findOne({ ...req.body }) : await Staff.findOne({ ...req.body });
 
 		if (result) {
 			const token = jwt.sign(
