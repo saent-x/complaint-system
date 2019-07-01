@@ -8,7 +8,6 @@ export const LoginStyle = theme => ({
 		minHeight: "400px",
 		margin: "auto",
 		marginTop: "50px",
-		padding: theme.spacing(0),
 		justifyContent: "center"
 	},
 	inputBox: {
@@ -24,7 +23,7 @@ export const LoginStyle = theme => ({
 	},
 	leveler: {
 		maxWidth: "300px",
-		height: "300px",
+		height: "auto",
 		display: "flex",
 		flexDirection: "column"
 	},

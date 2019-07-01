@@ -1,0 +1,38 @@
+.img-brand{
+    max-height: 5rem !important;
+    height: 60px;
+    width: 90px;
+}
+
+.text-brand{
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.nav-brand{
+    text-align: center;
+}
+
+.text-brand-hidden{
+    display: none;
+}
+
+@media only screen and (max-width: 768px){
+    .img-brand{
+        max-height: 2rem !important;
+        height: 40px;
+        width: 50px;
+    }
+
+    .nav-brand{
+        text-align: left;
+    }
+
+    .text-brand-hidden{
+        display: block;
+    }
+
+    .text-brand{
+        visibility: hidden;
+    }
+}

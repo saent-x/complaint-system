@@ -5,29 +5,38 @@ const { Complaint, ValidateComplaint, AssignComplaintToStaff, GetStaffToBeAssign
 const Helper = require("../utilities/helper");
 
 router.post("/add", Helper.jwtMiddleware, async (req, res) => {
+	console.log(req.body);
+
 	try {
 		const { error } = ValidateComplaint(req.body);
-		const { id } = Helper.GetTokenDetails(req);
 		if (error) return res.status(400).send(error.details[0].message);
 
+		const { id } = Helper.GetTokenDetails(req);
+		console.log(id);
 		const newComplaint = {
 			...req.body,
 			Student: id
 		};
+
 		//Check duplicate by checking the complaints array of the student
 		const $Student = await Student.findOne({ _id: id }).populate("Complaints");
 		if ($Student) {
-			let value = $Student.Complaints.find(complaint => complaint.Message.toLower() === newComplaint.Message);
+			let value = $Student.Complaints.find(complaint => complaint.Message.toLowerCase() === newComplaint.Message && complaint.Subject.toLowerCase() === newComplaint.Subject);
 			if (!value) {
 				const complaint = new Complaint(newComplaint);
-				const result = await complaint.save();
-				//After saving the new complaint, assign the complaint to a staff
-				if (result) {
-					const staff = AssignComplaintToStaff(GetStaffToBeAssigned(), result._id);
-					// If that worked send the updated complaint object
+
+				if (complaint) {
+					const staff = await GetStaffToBeAssigned(complaint.ComplaintRegion);
 					if (staff) {
-						const newResult = await Complaint.findOne({ _id: result._id });
-						return newResult ? res.send(newResult) : res.status(400).send("An error ocurred when getting new result!");
+						//Assign the staff to the complaint
+						complaint.Staff = staff._id;
+						const savedComplaint = await complaint.save();
+						//Add the saved complaint to the complaints array in student
+						$Student.Complaints.push(complaint._id);
+						await $Student.save();
+						//Add the complaint to the complaints array in the staff object
+						const result = await AssignComplaintToStaff(staff, savedComplaint._id);
+						return result ? res.send(result) : res.status(400).send("An error ocurred when getting new result!");
 					}
 
 					return res.status(400).send("An error ocurred while getting staff to be assigned");
@@ -45,9 +54,16 @@ router.post("/add", Helper.jwtMiddleware, async (req, res) => {
 
 router.get("/all", Helper.jwtMiddleware, async (req, res) => {
 	try {
-		const filter = Helper.GetTokenDetails(req).type === "student" ? { "Student._id": req.query.id } : { "Staff._id": req.query.id };
-		const $query = req.query.id ? Complaint.find(filter) : Complaint.find({});
+		let $query = null;
+		if (!req.query.id)
+			$query = Complaint.find({});
+		else {
+			const filter = Helper.GetTokenDetails(req).type === "student" ? { "Student": req.query.id } : { "Staff": req.query.id };
+			$query = Complaint.find(filter);
+		}
 		$query
+			.populate('Staff', 'Name')
+			.select('-FollowUps')
 			.then(results => (results ? res.send(results) : res.status(400).send("No Complaint recorded!")))
 			.catch(() => res.status(400).send("An error ocurred while getting results!"));
 	} catch (error) {
@@ -85,6 +101,7 @@ router.put("/", Helper.jwtMiddleware, async (req, res) => {
 			{ _id: req.query.id },
 			{
 				$set: {
+					Subject: req.body.Subject,
 					Message: req.body.Message,
 					Department: req.body.Department
 				}

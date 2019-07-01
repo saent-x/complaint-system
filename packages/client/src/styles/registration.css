@@ -1,11 +1,12 @@
 .regContainer {
 	background-color: white;
 	height: auto;
-    width: 600px;
+    width: 650px;
 	display: flex;
 	flex-direction: column;
 	margin: auto;
-	margin-top: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 25px;
     justify-content: center;
     align-content: center;
@@ -14,18 +15,20 @@
 .regContainer2 {
 	padding-top: 10px;
 	display: flex;
-	flex-direction: row;
-	margin: 10px;
+    flex-direction: row;
+    padding: 5px;
+    justify-content: center;
+    align-content: center;
 }
 
 .selectType {
-	width: 150px;
-	margin: 15px 5px 5px 5px !important;
+    width: 150px;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
 }
 
 .selectType2 {
 	width: 150px;
-	margin: 0 0 5px 0 !important;
 }
 
 .regButton {
@@ -40,14 +43,6 @@
 	background-color: black !important;
 }
 
-.remDetails {
-	margin: 10px 5px 5px 5px !important;
-}
-
-.inputBox {
-	margin: 5px !important;
-}
-
 /* .MuiInput-underline:after {
 	border-bottom: 2px solid black !important;
 } */
@@ -55,9 +50,18 @@
     width: 320px;
 }
 
-.marginFix{
-    margin-left: 5px !important;
+.dept-select{
+    width: 150px;
 }
+
+
+.marginFix{
+    margin-left: 10px !important;
+}
+.chr-select, .cos-textfield{
+    width: 250px;
+}
+
 @media only screen and (max-width: 768px){
     .regContainer{
         width: 100%;
@@ -66,18 +70,18 @@
     }
 
     .emailInput{
-        width: 250px;
+        width: 90%;
     }
 
     .marginFix{
-        margin: 0;
+        margin: 0 !important;
     }
 
     .selectType {
-        width:200px;
+        margin: 0 !important;
     }
-    .selectType2{
-        width: 200px;
+    .widthResponsive{
+        width: 190px;
     }
 
 }
