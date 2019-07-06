@@ -33,20 +33,7 @@ export default class PendingComplaints extends Component {
   componentDidMount() {
     // this.fetchUserData();
   }
-
-  handleCreateUser = (username, type, password) => {
-    // createInstance()
-    //   .post("/users", { username, role: type, password })
-    //   .then(res => {
-    //     alert(`${username} created successfully!`);
-    //     this.setState({ open: false });
-    //     setTimeout(this.fetchUserData, 0);
-    //   })
-    //   .catch(error =>
-    //     alert(!!error.response ? error.response.data : error.message)
-    //   );
-  };
-
+  
   handleDeleteUser = username => {
     const proceed = window.confirm(`${username} will be deleted. Continue?`);
     if (proceed) {
