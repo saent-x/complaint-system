@@ -22,13 +22,6 @@ var routes = {
 			layout: "/portal"
 		},
 		{
-			path: "/pendingcomplaints",
-			name: "Pending Complaints",
-			icon: "ni ni-key-25 text-green",
-			component: PendingComplaints,
-			layout: "/portal"
-		},
-		{
 			path: "/resolvedcomplaints",
 			name: "Resolved Complaints",
 			icon: "ni ni-planet text-blue",
@@ -42,6 +35,13 @@ var routes = {
 			name: "Dashboard",
 			icon: "ni ni-tv-2 text-blue",
 			component: Dashboard,
+			layout: "/portal"
+		},
+		{
+			path: "/complaints",
+			name: "Complaints",
+			icon: "ni ni-sound-wave text-red",
+			component: Complaints,
 			layout: "/portal"
 		}
 	]

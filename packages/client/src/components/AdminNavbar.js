@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import profileImg from "../assets/img/icons/common/profile.svg";
 import DropdownMenu from "./DropdownMenu";
+import { GetTokenInfo } from "../utilities/helper";
 
 class AdminNavbar extends React.Component {
   render() {
@@ -38,7 +39,7 @@ class AdminNavbar extends React.Component {
                         style={{ color: "black" }}
                         className="mb-0 text-sm font-weight-bold"
                       >
-                        Adeola Adeniji
+                        {GetTokenInfo().name}
                       </span>
                     </Media>
                   </Media>
