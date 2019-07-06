@@ -1,0 +1,60 @@
+.followup-container{
+    padding: 5px;
+    height: auto;
+    max-height: 200px;
+    overflow-y: scroll;
+    margin: 0;
+}
+
+.followup-card{
+    display: flex;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+    height: auto;
+    box-shadow: 0 15px 35px rgba(50, 50, 93, 0.2), 0 5px 15px rgba(0, 0, 0, 0.17);
+    flex-direction: column;
+}
+
+.followup-delete{
+    font-size: 13px;
+    color: red !important;
+    text-decoration: underline !important;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.followup-delete:hover{
+    color: blue !important;
+}
+
+.followup-acc{
+    font-size: 10px;
+    font-weight: bolder;
+    margin: 0;
+}
+
+.followup-mess{
+    font-size: 15px;
+    font-weight: 550;
+    color: darkslategray;
+    margin-bottom: 2px; 
+}
+
+.followup-date{
+    font-size: 9px;
+    font-weight: bolder;
+    margin: 0;
+}
+
+.modal-responsive{
+    max-width: 650px !important;
+}
+
+@media only screen and (max-width: 768px){
+    .modal-responsive{
+        max-width: 500px !important;
+    }
+}
