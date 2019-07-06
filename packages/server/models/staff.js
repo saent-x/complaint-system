@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-const AdminCredsSchema = new mongoose.Schema({
-	isAdmin: Boolean,
-	AdministrativeDepartment: { type: String, required: true }
-});
-
 const StaffSchema = new mongoose.Schema({
 	Name: String,
 	StaffNo: String,
@@ -13,8 +8,7 @@ const StaffSchema = new mongoose.Schema({
 	EmailAddress: String,
 	ComplaintRegion: { type: String, enum: ["Hostel", "Faculty", "Cafeteria", "Others"] },
 	Password: String,
-	AdminCreds: AdminCredsSchema,
-	AssignedComplaints: [{ type: mongoose.Schema.Types.ObjectId, ref: "Complaint" }]
+	AssignedNumber: { type: Number , default: 0}
 });
 
 function ValidateStaff(staff) {

@@ -8,8 +8,7 @@ const StudentSchema = {
 	MatNo: String,
 	Department: String,
 	Level: String,
-	CourseOfStudy: String,
-	Complaints: [{ type: mongoose.Schema.Types.ObjectId, ref: "Complaint" }]
+	CourseOfStudy: String
 };
 
 const Student = mongoose.model("Student", StudentSchema);
