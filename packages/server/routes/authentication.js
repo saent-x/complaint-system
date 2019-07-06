@@ -18,7 +18,9 @@ router.post("/register", async (req, res) => {
 		const checkEmail = isStudent
 			? await Student.findOne({ EmailAddress: req.body.EmailAddress })
 			: await Staff.findOne({ EmailAddress: req.body.EmailAddress });
-		const checkMatno = isStudent ? await Student.findOne({ MatNo: req.body.MatNo }) : await Staff.findOne({ StaffNo: req.body.StaffNo });
+		const checkMatno = isStudent
+			? await Student.findOne({ MatNo: req.body.MatNo })
+			: await Staff.findOne({ StaffNo: req.body.StaffNo });
 
 		if (checkEmail || checkMatno)
 			throw `Account with that${checkEmail ? "Email" : ""}${checkEmail && checkMatno ? " &" : ""}${
@@ -56,6 +58,7 @@ router.post("/", async (req, res) => {
 				{
 					id: result._id,
 					email: result.EmailAddress,
+					name: result.Name,
 					type: req.query.type
 				},
 				Helper.JWT_SECRET,
