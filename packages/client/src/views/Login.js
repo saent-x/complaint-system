@@ -5,7 +5,7 @@ import { LoginStyle } from "../styles/login.jss";
 import { Button, TextField, Paper, Typography, FormControl, Select, MenuItem, InputLabel } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { GetTokenInfo, StoreToken } from "../utilities/helper";
+import { handleError, StoreToken, $axios } from "../utilities/helper";
 import Logo from "assets/img/aui_logo.png";
 
 class Login extends Component {
@@ -51,27 +51,17 @@ class Login extends Component {
 				return;
 			}
 
-			fetch(`${API_URL}/api/auth?type=${this.state.accountType}`, {
-				method: "POST",
-				body: JSON.stringify(this.state.credentials),
-				headers: new Headers({
-					"Content-Type": "application/json"
-				})
-			})
+			$axios()
+				.post(`/api/auth?type=${this.state.accountType}`, this.state.credentials)
 				.then(res => {
-					if (!res.ok) throw res;
-					return res.json();
-				})
-				.then(data => {
 					this.setState({ logging_in: false });
 					//Store the token
-					StoreToken(data.token);
+					StoreToken(res.data.token);
 					this.props.history.push("/portal/index");
 				})
-				.catch(async err => {
+				.catch(error => {
 					this.setState({ error: true, logging_in: false });
-					const errorMessage = await err.text();
-					alert(errorMessage);
+					handleError(error);
 				});
 		}
 	}
@@ -87,9 +77,9 @@ class Login extends Component {
 
 		return (
 			<Paper className={classes.loginContainer} elevation={5}>
-				<div style={{textAlign: "center", marginBottom: "10px", marginTop: "10px"}}>
-					<img src={Logo} height="70px" width="100px"></img>
-					<h3 style={{marginTop: "15px"}}>AUI Complaint System</h3>
+				<div style={{ textAlign: "center", marginBottom: "10px", marginTop: "10px" }}>
+					<img src={Logo} height="70px" width="100px" />
+					<h3 style={{ marginTop: "15px" }}>AUI Complaint System</h3>
 				</div>
 
 				<form className={classes.leveler}>
@@ -124,7 +114,11 @@ class Login extends Component {
 					<br />
 					<FormControl>
 						<InputLabel>Account Type</InputLabel>
-						<Select className={classes.typeSelect} onChange={event => this.handleSelectChange(event)} value={this.state.accountType}>
+						<Select
+							className={classes.typeSelect}
+							onChange={event => this.handleSelectChange(event)}
+							value={this.state.accountType}
+						>
 							<MenuItem value="student">Student</MenuItem>
 							<MenuItem value="staff">Staff</MenuItem>
 						</Select>
