@@ -1,7 +1,5 @@
 const router = require("express").Router();
-const { Student } = require("../models/student");
-const { Staff } = require("../models/staff");
-const { Complaint, ValidateComplaint, AssignComplaintToStaff, GetStaffToBeAssigned } = require("../models/complaint");
+const { Complaint, ValidateComplaint, GetStaffToBeAssigned } = require("../models/complaint");
 const Helper = require("../utilities/helper");
 
 router.post("/add", Helper.jwtMiddleware, async (req, res) => {
@@ -12,58 +10,58 @@ router.post("/add", Helper.jwtMiddleware, async (req, res) => {
 		if (error) return res.status(400).send(error.details[0].message);
 
 		const { id } = Helper.GetTokenDetails(req);
-		console.log(id);
 		const newComplaint = {
 			...req.body,
 			Student: id
 		};
 
-		//Check duplicate by checking the complaints array of the student
-		const $Student = await Student.findOne({ _id: id }).populate("Complaints");
-		if ($Student) {
-			let value = $Student.Complaints.find(complaint => complaint.Message.toLowerCase() === newComplaint.Message && complaint.Subject.toLowerCase() === newComplaint.Subject);
-			if (!value) {
-				const complaint = new Complaint(newComplaint);
+		let value = await Complaint.find({
+			Message: newComplaint.Message,
+			Subject: newComplaint.Subject
+		});
+		if (value.length > 0) throw "complaint has already being lodged!";
 
-				if (complaint) {
-					const staff = await GetStaffToBeAssigned(complaint.ComplaintRegion);
-					if (staff) {
-						//Assign the staff to the complaint
-						complaint.Staff = staff._id;
-						const savedComplaint = await complaint.save();
-						//Add the saved complaint to the complaints array in student
-						$Student.Complaints.push(complaint._id);
-						await $Student.save();
-						//Add the complaint to the complaints array in the staff object
-						const result = await AssignComplaintToStaff(staff, savedComplaint._id);
-						return result ? res.send(result) : res.status(400).send("An error ocurred when getting new result!");
-					}
+		const complaint = new Complaint(newComplaint);
 
-					return res.status(400).send("An error ocurred while getting staff to be assigned");
-				}
-				return res.status(400).send("an error ocurred while adding a new complaint!");
-			}
+		if (!complaint) throw "an error ocurred while adding a new complaint!";
 
-			return res.status(400).send("complaint has already being lodged!");
+		const staff = await GetStaffToBeAssigned(complaint.ComplaintRegion);
+		if (!staff) throw "An error ocurred while getting staff to be assigned";
+		//Assign the staff to the complaint
+		complaint.Staff = staff._id;
+		const result = await complaint.save();
+
+		if (result) {
+			return result ? res.send(result) : res.status(400).send("An error ocurred when getting new result!");
 		}
-		return res.status("invalid student!");
 	} catch (error) {
-		return res.status(404).send(error);
+		return res.status(400).send(error);
 	}
 });
 
 router.get("/all", Helper.jwtMiddleware, async (req, res) => {
+	console.log(req.query);
+
 	try {
 		let $query = null;
 		if (!req.query.id)
-			$query = Complaint.find({});
+			if (!req.query.status) $query = Complaint.find({});
+			else $query = Complaint.find({ Status: req.query.status });
 		else {
-			const filter = Helper.GetTokenDetails(req).type === "student" ? { "Student": req.query.id } : { "Staff": req.query.id };
+			let StudentFilter = req.query.status
+				? { Student: req.query.id, Status: req.query.status }
+				: { Student: req.query.id };
+			let StaffFilter = req.query.status
+				? { Staff: req.query.id, Status: req.query.status }
+				: { Staff: req.query.id };
+
+			let filter = Helper.GetTokenDetails(req).type === "student" ? StudentFilter : StaffFilter;
+
 			$query = Complaint.find(filter);
 		}
 		$query
-			.populate('Staff', 'Name')
-			.select('-FollowUps')
+			.populate("Staff", "Name")
+			.select("-FollowUps")
 			.then(results => (results ? res.send(results) : res.status(400).send("No Complaint recorded!")))
 			.catch(() => res.status(400).send("An error ocurred while getting results!"));
 	} catch (error) {
@@ -73,7 +71,9 @@ router.get("/all", Helper.jwtMiddleware, async (req, res) => {
 
 router.get("/", async (req, res) => {
 	try {
-		Complaint.findOne({ _id: req.query.id })
+		Complaint.findOne({
+			_id: req.query.id
+		})
 			.then(result => (result ? res.send(result) : res.status(404).send("Complaint not found")))
 			.catch(() => res.status(400).send("An error ocurred while getting the result!"));
 	} catch (error) {
@@ -84,10 +84,18 @@ router.get("/", async (req, res) => {
 router.delete("/", Helper.jwtMiddleware, async (req, res) => {
 	try {
 		if (!req.query.id) return res.status(400).send("Invalid or No ID!!");
+		const complaintToDelete = await Complaint.findOneAndDelete({
+			_id: req.query.id
+		});
 
-		Complaint.findOneAndDelete({ _id: req.query.id })
-			.then(result => (result ? res.send(result) : res.status(400).send("An error ocurred while deleting!!")))
-			.catch(error => res.status(400).send(error));
+		if (!complaintToDelete) throw `Complaint does not exist!`;
+		/**
+		 * TODO: Reset the staffs AssignedNumber to 0
+		 */
+		const result = await complaintToDelete.save();
+
+		if (result) return res.send("Successfully Removed!");
+		throw `Failed to delete document, please try again later!!`;
 	} catch (error) {
 		return res.status(404).send(error);
 	}
@@ -98,15 +106,18 @@ router.put("/", Helper.jwtMiddleware, async (req, res) => {
 		if (!req.query.id || !req.body) return res.status(400).send("Invalid or No ID!!");
 
 		Complaint.findOneAndUpdate(
-			{ _id: req.query.id },
+			{
+				_id: req.query.id
+			},
 			{
 				$set: {
 					Subject: req.body.Subject,
-					Message: req.body.Message,
-					Department: req.body.Department
+					Message: req.body.Message
 				}
 			},
-			{ new: true }
+			{
+				new: true
+			}
 		)
 			.then(result => (result ? res.send(result) : res.status(400).send("An error ocurred while updating!!")))
 			.catch(error => res.status(400).send(error));
