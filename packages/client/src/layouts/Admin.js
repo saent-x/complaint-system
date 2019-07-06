@@ -40,13 +40,14 @@ class Admin extends React.Component {
     });
   };
   getBrandText = path => {
-    for (let i = 0; i < routes.length; i++) {
+    const route = GetTokenInfo().type === "student" ? routes.studentportal : routes.staffportal;
+    for (let i = 0; i < route.length; i++) {
       if (
         this.props.location.pathname.indexOf(
-          routes[i].layout + routes[i].path
+          route[i].layout + route[i].path
         ) !== -1
       ) {
-        return routes[i].name;
+        return route[i].name;
       }
     }
     return "Brand";
