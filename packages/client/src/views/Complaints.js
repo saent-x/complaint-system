@@ -220,7 +220,20 @@ class Complaints extends React.Component {
 				field: "Status ",
 				render: rowData => renderStatus(rowData)
 			},
-			{ title: "DATE", field: "DateAndTime", type: "string" }
+			{
+				title: "DATE", field: "DateAndTime", type: "string", render: rowData => {
+					var d = new Date(rowData.DateAndTime),
+						month = '' + (d.getMonth() + 1),
+						day = '' + d.getDate(),
+						year = d.getFullYear();
+
+					if (month.length < 2)
+						month = '0' + month;
+					if (day.length < 2)
+						day = '0' + day;
+
+					return [year, month, day].join('-');
+			} }
 		];
 
 		const leftTableActions = (
@@ -231,9 +244,10 @@ class Complaints extends React.Component {
 					alignItems: "center"
 				}}
 			>
-				<IconButton className="mr-2" onClick={() => this.setState({ open: true })}>
+				{GetTokenInfo().type === "student" ? (<IconButton className="mr-2" onClick={() => this.setState({ open: true })}>
 					<AddIcon />
-				</IconButton>
+				</IconButton>) : null}
+
 
 				<Input
 					style={{ maxWidth: "200px" }}
@@ -250,7 +264,7 @@ class Complaints extends React.Component {
 
 		const iconFontStyle = {
 			fontSize: 16,
-			color: "black"
+			color: "white"
 		};
 
 		const tableActions = [
@@ -261,7 +275,7 @@ class Complaints extends React.Component {
 					this.handleComplaintClick(rowData);
 				},
 				iconProps: {
-					style: { ...iconFontStyle }
+					style: { ...iconFontStyle, backgroundColor: "black", borderRadius: "100px" }
 				}
 			}
 		];
@@ -273,7 +287,7 @@ class Complaints extends React.Component {
 				this.handleComplaintUpdate(rowData);
 			},
 			iconProps: {
-				style: { ...iconFontStyle }
+				style: { ...iconFontStyle, backgroundColor: "blue", borderRadius: "100px" }
 			}
 		};
 
@@ -284,7 +298,7 @@ class Complaints extends React.Component {
 				this.handleDeleteComplaint(rowData._id);
 			},
 			iconProps: {
-				style: { ...iconFontStyle }
+				style: { ...iconFontStyle, backgroundColor: "red", borderRadius: "100px" }
 			}
 		};
 
@@ -335,7 +349,7 @@ class Complaints extends React.Component {
 									rowStyle: rowData => ({
 										backgroundColor:
 											this.state.selected_complaint &&
-											this.state.selected_complaint._id === rowData._id
+												this.state.selected_complaint._id === rowData._id
 												? "#EEE"
 												: "#FFF"
 									})

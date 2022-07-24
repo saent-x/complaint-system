@@ -60,7 +60,7 @@ class Admin extends React.Component {
           routes={this.state.portalType === "student" ? routes.studentportal : routes.staffportal}
           logo={{
             innerLink: "/portal/index",
-            imgSrc: require("assets/img/aui_logo.png"),
+            imgSrc: require("assets/img/logo.png"),
             imgAlt: "..."
           }}
         />

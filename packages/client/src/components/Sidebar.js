@@ -83,8 +83,8 @@ class Sidebar extends React.Component {
 					{logo ? (
 						<NavbarBrand className="pt-2 nav-brand" {...navbarBrandProps}>
 							<img alt={logo.imgAlt} className="navbar-brand-img img-brand" src={logo.imgSrc} />
-							<span className="text-brand-hidden">AUI CMS</span>
-							<p className="text-brand">AUI Complaint System</p>
+							<span className="text-brand-hidden">CMS</span>
+							<p className="text-brand">Complaint System</p>
 						</NavbarBrand>
 					) : null}
 					{/* User */}
@@ -143,17 +143,6 @@ class Sidebar extends React.Component {
 						<Nav navbar>{this.createLinks(routes)}</Nav>
 						{/* Divider */}
 						<hr className="my-3" />
-						{/* Heading */}
-						<h6 className="navbar-heading text-muted">Documentation</h6>
-						{/* Navigation */}
-						<Nav className="mb-md-3" navbar>
-							<NavItem>
-								<NavLink href="https://some-link-to-getting-started-docs">
-									<i className="ni ni-palette" />
-									Help & Support
-								</NavLink>
-							</NavItem>
-						</Nav>
 					</Collapse>
 				</Container>
 			</Navbar>

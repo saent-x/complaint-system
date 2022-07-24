@@ -13,7 +13,7 @@ function handleLogout(e, props) {
 
 function ProfileDropdownMenu(props) {
   return (
-    <div style={{ zIndex: 1000 }}>
+    <div style={{ zIndex: 10000, position: "absolute" }}>
       <DropdownMenu className="dropdown-menu-arrow" right>
         <DropdownItem className="noti-title" header tag="div">
           <h6 className="text-overflow m-0">Welcome!</h6>

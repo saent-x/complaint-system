@@ -18,13 +18,13 @@ function StatCards(props) {
                     <Row>
                       <div className="col">
                         <CardTitle
-                          tag="h5"
+                          tag="h6"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Active Devices
+                          Complaints
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {props.scansDone}
+                          {props.complaints}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -33,11 +33,6 @@ function StatCards(props) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <Link to="/admin/scan" className="text-nowrap">
-                        Initiate New Scan
-                      </Link>
-                    </p>
                   </CardBody>
                 </Card>
               </Col>
@@ -47,13 +42,13 @@ function StatCards(props) {
                     <Row>
                       <div className="col">
                         <CardTitle
-                          tag="h5"
+                          tag="h6"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Files Indexed
+                          Pending Complaints
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {props.filesIndexed}
+                          {props.pendingComplaints}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -62,11 +57,6 @@ function StatCards(props) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <Link to="" className="text-nowrap">
-                        See Breakdown
-                      </Link>
-                    </p>
                   </CardBody>
                 </Card>
               </Col>
@@ -76,13 +66,13 @@ function StatCards(props) {
                     <Row>
                       <div className="col">
                         <CardTitle
-                          tag="h5"
+                          tag="h6"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Users
+                          Resolved Complaints
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {props.users}
+                          {props.resolvedComplaints}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -91,40 +81,6 @@ function StatCards(props) {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <Link to="/admin/users" className="text-nowrap">
-                        Create new
-                      </Link>
-                    </p>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col lg="6" xl="3">
-                <Card className="shadow card-stats mb-4 mb-xl-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          tag="h5"
-                          className="text-uppercase text-muted mb-0"
-                        >
-                          Cards Found
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
-                          {props.cardsFound}
-                        </span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                          <i className="fas fa-credit-card" />
-                        </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <Link to="" className="text-nowrap">
-                        See Breakdown
-                      </Link>
-                    </p>
                   </CardBody>
                 </Card>
               </Col>

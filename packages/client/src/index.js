@@ -7,13 +7,13 @@ import "assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/erevna-dashboard.scss";
 import "typeface-roboto";
 
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
 import AdminLayout from "layouts/Admin";
 import Login from "./views/Login";
 import FourOhFour from "./components/FourOhFour";
 import Registration from "./views/Registration";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
    "fontFamily": "\"Open Sans\", \"Helvetica\", \"Arial\", sans-serif",
    "fontSize": 13,

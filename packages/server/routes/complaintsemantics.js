@@ -39,6 +39,34 @@ router.post("/add", Helper.jwtMiddleware, async (req, res) => {
 	}
 });
 
+router.get("/stats", Helper.jwtMiddleware, async (req, res) => {
+	try {
+		var action;
+
+		if (req.query.id) {
+			action = Complaint.find({
+				Student: req.query.id
+			})
+		}
+		else {
+			action = Complaint.find()
+		}
+		action.then(result => {
+			var complaints = result.length;
+			var pending = result.filter(x => x.Status === "pending").length
+			var resolved = result.filter(x => x.Status === "resolved").length
+
+			return res.send({ complaints, pending, resolved });
+		}).catch((err) => {
+			console.log(err)
+			res.status(400).send("An error ocurred while getting the result!")
+		});
+	} catch (error) {
+		console.log(error)
+		return res.status(404).send(error);
+	}
+})
+
 router.get("/all", Helper.jwtMiddleware, async (req, res) => {
 	console.log(req.query);
 
@@ -113,6 +141,30 @@ router.put("/", Helper.jwtMiddleware, async (req, res) => {
 				$set: {
 					Subject: req.body.Subject,
 					Message: req.body.Message
+				}
+			},
+			{
+				new: true
+			}
+		)
+			.then(result => (result ? res.send(result) : res.status(400).send("An error ocurred while updating!!")))
+			.catch(error => res.status(400).send(error));
+	} catch (error) {
+		return res.status(404).send(error);
+	}
+});
+
+router.put("/status", Helper.jwtMiddleware, async (req, res) => {
+	try {
+		if (!req.query.id || !req.body) return res.status(400).send("Invalid or No ID!!");
+
+		Complaint.findOneAndUpdate(
+			{
+				_id: req.query.id
+			},
+			{
+				$set: {
+					Status: req.body.status,
 				}
 			},
 			{

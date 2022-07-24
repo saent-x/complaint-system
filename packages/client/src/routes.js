@@ -22,6 +22,13 @@ var routes = {
 			layout: "/portal"
 		},
 		{
+			path: "/pendingcomplaints",
+			name: "Pending Complaints",
+			icon: "ni ni-planet text-blue",
+			component: PendingComplaints,
+			layout: "/portal"
+		},
+		{
 			path: "/resolvedcomplaints",
 			name: "Resolved Complaints",
 			icon: "ni ni-planet text-blue",
@@ -42,6 +49,20 @@ var routes = {
 			name: "Complaints",
 			icon: "ni ni-sound-wave text-red",
 			component: Complaints,
+			layout: "/portal"
+		},
+		{
+			path: "/pendingcomplaints",
+			name: "Pending Complaints",
+			icon: "ni ni-planet text-blue",
+			component: PendingComplaints,
+			layout: "/portal"
+		},
+		{
+			path: "/resolvedcomplaints",
+			name: "Resolved Complaints",
+			icon: "ni ni-planet text-blue",
+			component: ResolvedComplaints,
 			layout: "/portal"
 		}
 	]

@@ -6,10 +6,11 @@ const helmet = require("helmet");
 const authentication = require("./routes/authentication");
 const complaintsemantics = require("./routes/complaintsemantics");
 const followupsemantics = require("./routes/followupsemantics");
+require('dotenv').config()
 
 // Connect Database
 mongoose
-	.connect("mongodb://localhost/aui-cms", {
+	.connect(`mongodb+srv://admin:${process.env.PASSWORD}@cluster0.fmzyaje.mongodb.net/complaint-db?retryWrites=true&w=majority`, {
 		useNewUrlParser: true
 	})
 	.then(() => console.log("db connected."))

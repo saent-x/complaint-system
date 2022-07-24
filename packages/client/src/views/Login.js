@@ -6,7 +6,7 @@ import { Button, TextField, Paper, Typography, FormControl, Select, MenuItem, In
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { handleError, StoreToken, $axios } from "../utilities/helper";
-import Logo from "assets/img/aui_logo.png";
+import Logo from "assets/img/logo.png";
 
 class Login extends Component {
 	constructor(props) {
@@ -79,7 +79,7 @@ class Login extends Component {
 			<Paper className={classes.loginContainer} elevation={5}>
 				<div style={{ textAlign: "center", marginBottom: "10px", marginTop: "10px" }}>
 					<img src={Logo} height="70px" width="100px" />
-					<h3 style={{ marginTop: "15px" }}>AUI Complaint System</h3>
+					<h3 style={{ marginTop: "15px" }}>Complaint System</h3>
 				</div>
 
 				<form className={classes.leveler}>
