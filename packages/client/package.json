@@ -41,7 +41,7 @@
     "lodash": "^4.17.11",
     "material-table": "1.37.0",
     "moment": "2.24.0",
-    "node-sass": "4.11.0",
+    "node-sass": "7.0.0",
     "nouislider": "13.1.1",
     "rc-checkbox": "^2.1.6",
     "react": "16.8.4",
