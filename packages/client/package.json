@@ -1,13 +1,13 @@
 {
-  "name": "erevna",
+  "name": "complaint-system",
   "version": "1.0.0",
-  "description": "A scalable card management solution by esentry",
   "main": "index.js",
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/essentrydev/erevna-dashboard/"
+    "type": "git"
   },
-  "author": "Esentry Systems",
+  "engines": {
+    "node": "11.x"
+  },
   "license": "MIT",
   "homepage": "/",
   "scripts": {
